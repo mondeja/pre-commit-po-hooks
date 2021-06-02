@@ -22,9 +22,15 @@ from hooks.obsolete_messages import check_obsolete_messages
         ),
         (
             [
-                '#\nmsgid ""\nmsgstr ""\n\n#~ msgid "Obsolete"\n#~ msgstr "Obsoleto"\n',
+                (
+                    '#\nmsgid ""\nmsgstr ""\n\n#~ msgid "Obsolete "\n#~ "message"'
+                    '\n#~ msgstr "Mensaje obsoleto"\n'
+                ),
                 '#\nmsgid ""\nmsgstr ""\n\nmsgid "Hello"\nmsgstr "Hola"\n',
-                '#\nmsgid ""\nmsgstr ""\n\n#~ msgid "Hello"\n#~ msgstr "Hola"\n',
+                (
+                    '#\nmsgid ""\nmsgstr ""\n\n#~ msgid "Hello"\n#~ msgstr "Hola"\n'
+                    '\nmsgid "Foo"\nmsgstr "Bar"\n'
+                ),
             ],
             2,
             1,
