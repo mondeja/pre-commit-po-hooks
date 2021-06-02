@@ -1,0 +1,12 @@
+- id: obsolete-messages
+  name: obsolete-messages
+  entry: obsolete-messages-hook
+  description: Checks for obsolete messages in PO files
+  files: \.po$
+  language: python
+- id: untranslated-messages
+  name: untranslated-messages
+  entry: untranslated-messages-hook
+  description: Checks for untranslated messages in PO files
+  files: \.po$
+  language: python
