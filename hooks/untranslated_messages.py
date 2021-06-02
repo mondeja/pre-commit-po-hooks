@@ -1,4 +1,4 @@
-"""Checks for untranslated messages in pofiles.
+"""Checks for untranslated messages in PO files.
 
 Returns an error code if a pofile has an untranslated message.
 """

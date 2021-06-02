@@ -1,4 +1,4 @@
-"""Checks for obsolete messages in pofiles.
+"""Checks for obsolete messages in PO files.
 
 Returns an error code if a pofile has an obsolete message.
 """
