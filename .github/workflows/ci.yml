@@ -34,11 +34,11 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest -svv --cov=hooks --cov-config=setup.cfg
-      - name: Coveralls
-        run: coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_SERVICE_NAME: github
+      # - name: Coveralls
+      #  run: coveralls
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    COVERALLS_SERVICE_NAME: github
 
   build-sdist:
     if: startsWith(github.ref, 'refs/tags/')
