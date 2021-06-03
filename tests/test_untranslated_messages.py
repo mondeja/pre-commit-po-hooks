@@ -10,7 +10,7 @@ import pytest
 from hooks.untranslated_messages import check_untranslated_messages
 
 
-@pytest.mark.parametrize("quiet", (False, True))
+@pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))
 @pytest.mark.parametrize(
     ("contents", "n_printed_errors", "expected_exitcode", "expected_line_numbers"),
     (

@@ -10,3 +10,9 @@
   description: Checks for untranslated messages in PO files
   files: \.po$
   language: python
+- id: lreplace-extracted-comments
+  name: lreplace-extracted-comments
+  entry: lreplace-extracted-comments-hook
+  description: Replaces a string matching at the beginning of extracted comments
+  files: \.po$
+  language: python
