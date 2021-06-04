@@ -9,7 +9,7 @@ import re
 import sys
 
 
-def check_metadata(filenames, headers_spec, quiet=False):
+def check_metadata(filenames, headers_spec, no_metadata=False, quiet=False):
     """Check that metadata headers and values match a set of requirements.
 
     Parameters
@@ -21,6 +21,11 @@ def check_metadata(filenames, headers_spec, quiet=False):
     headers_spec : dict
       Name of headers as keys and regular expressions as values to match
       in the metadata of each file.
+
+    no_metadata : bool, optional
+      When this option is set to ``True``, the hook instead checks that there
+      is no metadata in the files, so it will return 1 if metadata is found
+      and 0 exitcode otherwise.
 
     quiet : bool, optional
       Enabled, don't print output to stderr when a wrong metadata is found.
@@ -44,21 +49,35 @@ def check_metadata(filenames, headers_spec, quiet=False):
             if line.startswith('msgid ""') and content_lines[i + 1].startswith(
                 'msgstr ""'
             ):
-                if content_lines[i + 2].startswith('"'):
+                if (len(content_lines) > i + 2) and content_lines[i + 2].startswith(
+                    '"'
+                ):
                     _first_metadata_line = i + 2
+
+                    if no_metadata:
+                        exitcode = 1
+                        if not quiet:
+                            sys.stderr.write(
+                                f"Found unexpected metadata at {filename}:{i +3}\n"
+                            )
                 else:
-                    sys.stderr.write(f"No metadata found in the file {filename}\n")
-                    exitcode = 1
+                    if not no_metadata:
+                        exitcode = 1
+                        if not quiet:
+                            sys.stderr.write(
+                                f"No metadata found in the file {filename}\n"
+                            )
+
                 break
 
-        if _first_metadata_line is None:
+        if (no_metadata and exitcode) or _first_metadata_line is None:
             continue
 
         for i, line in enumerate(content_lines[_first_metadata_line:]):
             if not line.strip():
                 break
 
-            header, value = line.split(": ")
+            header, value = line.split(": ", maxsplit=1)
             header = header.lstrip('"')
 
             if header in headers_spec_regex:
@@ -99,10 +118,31 @@ def main():
     parser.add_argument(
         "filenames", nargs="*", help="Filenames to check for obsolete messages"
     )
+    parser.add_argument(
+        "-n",
+        "--no-metadata",
+        action="store_true",
+        dest="no_metadata",
+        help=(
+            "The files shouldn't have metadata. If a file has metadata"
+            " information, exits with code 1."
+        ),
+    )
     parser.add_argument("-q", "--quiet", action="store_true", help="Supress output")
     args = parser.parse_args()
 
-    return check_metadata(args.filenames, headers_spec, quiet=args.quiet)
+    if args.no_metadata and len(headers_spec.keys()):
+        raise ValueError(
+            "You must pass either '--no-metadata' or headers regexes specification,"
+            " but both can't be non false."
+        )
+
+    return check_metadata(
+        args.filenames,
+        headers_spec,
+        no_metadata=args.no_metadata,
+        quiet=args.quiet,
+    )
 
 
 if __name__ == "__main__":

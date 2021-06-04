@@ -15,6 +15,7 @@ from hooks.check_metadata import check_metadata
     (
         "contents",
         "headers_spec",
+        "no_metadata",
         "n_printed_errors",
         "expected_exitcode",
         "expected_line_numbers",
@@ -32,9 +33,34 @@ from hooks.check_metadata import check_metadata
                 "Project-Id-Version": r"v\d+\.\d+\.\d+",
                 "Report-Msgid-Bugs-To": "foobar",
             },
+            False,
             1,
             1,
             [5],
+        ),
+        (
+            [
+                ('#\nmsgid ""\nmsgstr ""\n'),
+            ],
+            {},
+            True,
+            0,
+            0,
+            None,
+        ),
+        (
+            [
+                (
+                    '#\nmsgid ""\nmsgstr ""\n"Project-Id-Version: v0.240.1\\n"\n'
+                    '"Report-Msgid-Bugs-To: Álvaro Mondéjar'
+                    ' <mondejar1994@gmail.com>\\n"\n'
+                ),
+            ],
+            {},
+            True,
+            1,
+            1,
+            [4],
         ),
     ),
 )
@@ -42,6 +68,7 @@ def test_check_obsolete_messages(
     quiet,
     contents,
     headers_spec,
+    no_metadata,
     n_printed_errors,
     expected_exitcode,
     expected_line_numbers,
@@ -58,7 +85,15 @@ def test_check_obsolete_messages(
 
     stderr = io.StringIO()
     with contextlib.redirect_stderr(stderr):
-        assert check_metadata(filenames, headers_spec, quiet=quiet) == expected_exitcode
+        assert (
+            check_metadata(
+                filenames,
+                headers_spec,
+                no_metadata=no_metadata,
+                quiet=quiet,
+            )
+            == expected_exitcode
+        )
 
     stderr_lines = stderr.getvalue().splitlines()
     if quiet:

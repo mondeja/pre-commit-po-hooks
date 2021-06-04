@@ -66,6 +66,9 @@ Check that metadata fields matches a set of regular expressions.
 - `-v/--value REGEX`: Can be passed multiple times. Indicates the regular
  expression that the last header passed in the argument `-h/--header` must
  match in the checked PO files.
+- `-n/--no-metadata`: When this option is passed, the hook instead checks that
+ there is no metadata in the files, so it will exit with code 1 if some
+ metadata is found in a file or 0 if there is no metadata in any files.
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
 [pypi-version-badge-link]: https://img.shields.io/pypi/v/pre-commit-po-hooks
