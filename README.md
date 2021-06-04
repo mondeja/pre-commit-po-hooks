@@ -15,10 +15,8 @@ Hooks for pre-commit useful working with PO files.
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
-    - id: lreplace-translator-comments
-      args:
-        - '-m "Translators: "'
-        - '-r ""'
+    - id: lreplace-extracted-comments
+      args: ['-m', 'Translators: ', '-r', '']
 ```
 
 ## Hooks
@@ -41,10 +39,10 @@ more about this problem in [django-rosetta#245][django-rosetta-lstrip]).
 
 - `-m/--match "STRING"`: Matching string to be replaced.
 - `-r/--replacement "STRING"`: Replacement for the match at the beginning of
- the translator comment. If you want to remove the matching beginning you can
+ the extracted comment. If you want to remove the matching beginning you can
  pass an empty string `""`.
 - `-d/--dry-run`: Don't do the replacements, only writes to stderr the locations
- of the translator comments to be replaced. 
+ of the extracted comments to be replaced. 
  
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
