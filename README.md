@@ -16,7 +16,17 @@ Hooks for pre-commit useful working with PO files.
     - id: obsolete-messages
     - id: untranslated-messages
     - id: lreplace-extracted-comments
-      args: ['-m', 'Translators: ', '-r', '']
+      args:
+        - -m
+        - 'Translators: '
+        - -r
+        - ''
+    - id: check-metadata
+      args:
+        - -h
+        - Project-Id-Version
+        - -v
+        - v\d+\.\d+\.\d+
 ```
 
 ## Hooks
@@ -42,8 +52,20 @@ more about this problem in [django-rosetta#245][django-rosetta-lstrip]).
  the extracted comment. If you want to remove the matching beginning you can
  pass an empty string `""`.
 - `-d/--dry-run`: Don't do the replacements, only writes to stderr the locations
- of the extracted comments to be replaced. 
+ of the extracted comments to be replaced.
  
+### **`check-metadata`**
+
+Check that metadata fields matches a set of regular expressions.
+
+#### Parameters
+
+- `-h/--header HEADER`: Header name to match in metadata. This argument can be
+ passed multiple times, but after each `-h/--header` argument must be a
+ `-v/--value` that indicates the regular expression for that header.
+- `-v/--value REGEX`: Can be passed multiple times. Indicates the regular
+ expression that the last header passed in the argument `-h/--header` must
+ match in the checked PO files.
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
 [pypi-version-badge-link]: https://img.shields.io/pypi/v/pre-commit-po-hooks

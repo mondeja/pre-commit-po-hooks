@@ -16,3 +16,9 @@
   description: Replaces a string matching at the beginning of extracted comments
   files: \.po$
   language: python
+- id: check-metadata
+  name: check-metadata
+  entry: check-metadata-hook
+  description: Checks that the metadata values of your PO files matchs against some regexes
+  files: \.po$
+  language: python

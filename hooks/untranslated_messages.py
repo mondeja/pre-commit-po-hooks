@@ -1,6 +1,6 @@
 """Checks for untranslated messages in PO files.
 
-Returns an error code if a pofile has an untranslated message.
+Returns an error code if a PO file has an untranslated message.
 """
 
 import argparse
@@ -14,7 +14,7 @@ def check_untranslated_messages(filenames, quiet=False):
     ----------
 
     filenames : list
-      Set o file names to check.
+      Set of file names to check.
 
     quiet : bool, optional
       Enabled, don't print output to stderr when an untranslated message is found.

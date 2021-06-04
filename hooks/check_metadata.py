@@ -1,0 +1,109 @@
+"""Script that checks metadata sanity of PO files.
+
+For each metadata header, you can specify that the value should match with
+a regex.
+"""
+
+import argparse
+import re
+import sys
+
+
+def check_metadata(filenames, headers_spec, quiet=False):
+    """Check that metadata headers and values match a set of requirements.
+
+    Parameters
+    ----------
+
+    filenames : list
+      Set of file names to check.
+
+    headers_spec : dict
+      Name of headers as keys and regular expressions as values to match
+      in the metadata of each file.
+
+    quiet : bool, optional
+      Enabled, don't print output to stderr when a wrong metadata is found.
+
+    Returns
+    -------
+
+    int: 0 if no wrong metadata fields found, 1 otherwise.
+    """
+    headers_spec_regex = {
+        header: re.compile(rf"{value}") for header, value in headers_spec.items()
+    }
+
+    exitcode = 0
+    for filename in filenames:
+        with open(filename) as f:
+            content_lines = f.readlines()
+
+        _first_metadata_line = None
+        for i, line in enumerate(content_lines):
+            if line.startswith('msgid ""') and content_lines[i + 1].startswith(
+                'msgstr ""'
+            ):
+                if content_lines[i + 2].startswith('"'):
+                    _first_metadata_line = i + 2
+                else:
+                    sys.stderr.write(f"No metadata found in the file {filename}\n")
+                    exitcode = 1
+                break
+
+        if _first_metadata_line is None:
+            continue
+
+        for i, line in enumerate(content_lines[_first_metadata_line:]):
+            if not line.strip():
+                break
+
+            header, value = line.split(": ")
+            header = header.lstrip('"')
+
+            if header in headers_spec_regex:
+                value = re.sub(r"(\n|\\n|\"$)+", "", value)
+                regex = headers_spec_regex[header]
+                if re.match(regex, value) is None:
+                    exitcode = 1
+                    if not quiet:
+                        sys.stderr.write(
+                            f"Wrong metadata value at {filename}"
+                            f":{_first_metadata_line + i + 1} (regex"
+                            f" '{regex.pattern}' not matching for value"
+                            f" '{value}' in header '{header}')\n"
+                        )
+
+    return exitcode
+
+
+def main():
+    parser = argparse.ArgumentParser()
+
+    to_remove = ["-h", "--header", "-v", "--value"]
+    argv, headers_spec, _current_header = (sys.argv, dict(), None)
+    argv_length = len(argv)
+    for i, arg in enumerate(argv):
+        if i < (argv_length - 1):
+            if arg in ["-h", "--header"]:
+                _current_header = argv[i + 1]
+            elif arg in ["-v", "--value"] and _current_header is not None:
+                value = argv[i + 1]
+                headers_spec[_current_header] = value
+                to_remove.extend([value, _current_header])
+                _current_header = None
+    for value in to_remove:
+        if value in argv:
+            argv.remove(value)
+
+    parser.add_argument(
+        "filenames", nargs="*", help="Filenames to check for obsolete messages"
+    )
+    parser.add_argument("-q", "--quiet", action="store_true", help="Supress output")
+    args = parser.parse_args()
+
+    return check_metadata(args.filenames, headers_spec, quiet=args.quiet)
+
+
+if __name__ == "__main__":
+    exit(main())

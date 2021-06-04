@@ -26,7 +26,7 @@ def lreplace_extracted_comments(
     ----------
 
     filenames : list
-      Set o file names to replace.
+      Set of file names to replace.
 
     match : str
       The start of the extracted comment content to be replaced.

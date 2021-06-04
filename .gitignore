@@ -6,6 +6,7 @@
 /LC_MESSAGES
 test.md
 test.po
+*.po
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
