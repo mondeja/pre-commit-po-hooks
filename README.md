@@ -50,7 +50,7 @@ more about this problem in [django-rosetta#245][django-rosetta-lstrip]).
 [pypi-pyversions-badge-link]: https://img.shields.io/pypi/pyversions/pre-commit-po-hooks
 [license-image]: https://img.shields.io/pypi/l/pre-commit-po-hooks?color=light-green
 [license-link]: https://github.com/mondeja/pre-commit-po-hooks/blob/master/LICENSE
-[tests-image]: https://img.shields.io/github/workflow/status/mondeja/pre-commit-po-hooks/CI
+[tests-image]: https://img.shields.io/github/workflow/status/mondeja/pre-commit-po-hooks/CI?logo=github&label=tests
 [tests-link]: https://github.com/mondeja/pre-commit-po-hooks/actions?query=workflow%CI
 
 [django-rosetta-lstrip]: https://github.com/mbi/django-rosetta/pull/245
