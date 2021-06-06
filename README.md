@@ -69,6 +69,8 @@ Check that metadata fields matches a set of regular expressions.
 - `-n/--no-metadata`: When this option is passed, the hook instead checks that
  there is no metadata in the files, so it will exit with code 1 if some
  metadata is found in a file or 0 if there is no metadata in any files.
+- `-r/--remove/--remove-metadata`: When this option is passed the metadata will
+ be removed from the files instead of being trated as a lint error.
 
 ### **`standard-metadata`**
 
@@ -90,6 +92,16 @@ it passing the `-h` and `-v` arguments of the
 For example, if your version
 includes the character `v` at the beginning:
 `-h "Project-Id-Version" -v "v\d+\.\d+\.\d"`
+
+### **`no-metadata`**
+
+It will check if PO files has metadata. If has metadata, it will fail the check
+return 1 exit code.
+
+#### Parameters
+
+- `-r/--remove/--remove-metadata`: When this option is passed the metadata will
+ be removed from the files instead of being trated as a lint error.
 
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
