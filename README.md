@@ -105,7 +105,7 @@ first argument:
 ```yaml
 - id: max-messages
   args:
-    - 5000
+    - "5000"
 ```
 
 #### Parameters
