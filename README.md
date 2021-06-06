@@ -16,12 +16,7 @@ Hooks for pre-commit useful working with PO files.
     - id: obsolete-messages
     - id: untranslated-messages
     - id: remove-django-translators
-    - id: check-metadata
-      args:
-        - -h
-        - Project-Id-Version
-        - -v
-        - v\d+\.\d+\.\d+
+    - id: standard-metadata
 ```
 
 ## Hooks
