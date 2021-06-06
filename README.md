@@ -84,19 +84,18 @@ If you need to replace some fields with other regular expressions, you can do
 it passing the `-h` and `-v` arguments of the
 [`check-metadata` hook][check-metadata-link].
 
-For example, if your version
-includes the character `v` at the beginning:
+For example, if your version includes the character `v` at the beginning:
 `-h "Project-Id-Version" -v "v\d+\.\d+\.\d"`
 
 ### **`no-metadata`**
 
 It will check if PO files has metadata. If has metadata, it will fail the check
-return 1 exit code.
+returning exit code 1.
 
 #### Parameters
 
 - `-r/--remove/--remove-metadata`: When this option is passed the metadata will
- be removed from the files instead of being trated as a lint error.
+ be removed from the files instead of being treated as a lint error.
 
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
