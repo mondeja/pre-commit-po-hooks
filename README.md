@@ -11,7 +11,7 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.3.3
+  rev: v1.3.4
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
@@ -77,7 +77,7 @@ on the next regular expressions:
 - `Last-Translator`: `.+\s<.+@.+\..+>`
 - `Language-Team`: `.+\s<.+@.+\..+>`
 - `Language`: `\w\w_?\w?\w?(@\w+)?`
-- `Content-Type`: `text/plain; charset=[a-zA-Z\-]+`
+- `Content-Type`: `text/plain; charset=[0-9a-zA-Z\-]+`
 - `Content-Transfer-Encoding`: `\d+bits?`
 
 If you need to replace some fields with other regular expressions, you can do

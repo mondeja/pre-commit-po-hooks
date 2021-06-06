@@ -46,6 +46,8 @@ def check_metadata(
 
     exitcode = 0
     for filename in filenames:
+        headers_matched = []
+
         with open(filename) as f:
             content_lines = f.readlines()
 
@@ -99,6 +101,7 @@ def check_metadata(
                 header = header.lstrip('"')
 
                 if header in headers_spec_regex:
+                    headers_matched.append(header)
                     value = re.sub(r"(\n|\\n|\"$)+", "", value)
                     regex = headers_spec_regex[header]
                     if re.match(regex, value) is None:
@@ -110,6 +113,14 @@ def check_metadata(
                                 f" '{regex.pattern}' not matching for value"
                                 f" '{value}' in header '{header}')\n"
                             )
+
+            for header in headers_spec.keys():
+                if header not in headers_matched:
+                    sys.stderr.write(
+                        f"Metadata header '{header}' expected at file"
+                        f" {filename}:{_first_metadata_line}, but not found\n"
+                    )
+                    exitcode = 1
 
     return exitcode
 
@@ -199,7 +210,7 @@ def main():
             "Last-Translator": r".+\s<.+@.+\..+>",
             "Language-Team": r".+\s<.+@.+\..+>",
             "Language": r"\w\w_?\w?\w?(@\w+)?",
-            "Content-Type": r"text/plain; charset=[a-zA-Z\-]+",
+            "Content-Type": r"text/plain; charset=[0-9a-zA-Z\-]+",
             "Content-Transfer-Encoding": r"\d+bits?",
         }
         if headers_spec:
