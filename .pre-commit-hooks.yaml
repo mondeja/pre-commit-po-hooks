@@ -31,6 +31,12 @@
 - id: standard-metadata
   name: standard-metadata
   entry: check-metadata-hook --standard-headers
-  description: Checks that the metadata of your PO files fits a set of standard requirements.
+  description: Checks that the metadata of your PO files fits a set of standard requirements
+  files: \.po$
+  language: python
+- id: no-metadata
+  name: no-metadata
+  entry: check-metadata-hook --no-metadata
+  description: Checks that your PO don't contain metadata headers
   files: \.po$
   language: python

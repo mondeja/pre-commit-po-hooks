@@ -9,7 +9,9 @@ import re
 import sys
 
 
-def check_metadata(filenames, headers_spec, no_metadata=False, quiet=False):
+def check_metadata(
+    filenames, headers_spec, no_metadata=False, remove_metadata=False, quiet=False
+):
     """Check that metadata headers and values match a set of requirements.
 
     Parameters
@@ -26,6 +28,9 @@ def check_metadata(filenames, headers_spec, no_metadata=False, quiet=False):
       When this option is set to ``True``, the hook instead checks that there
       is no metadata in the files, so it will return 1 if metadata is found
       and 0 exitcode otherwise.
+
+    remove_metadata : bool, optional
+      Removes the metadata of the PO file.
 
     quiet : bool, optional
       Enabled, don't print output to stderr when a wrong metadata is found.
@@ -54,11 +59,11 @@ def check_metadata(filenames, headers_spec, no_metadata=False, quiet=False):
                 ):
                     _first_metadata_line = i + 2
 
-                    if no_metadata:
+                    if no_metadata and not remove_metadata:
                         exitcode = 1
                         if not quiet:
                             sys.stderr.write(
-                                f"Found unexpected metadata at {filename}:{i +3}\n"
+                                f"Found unexpected metadata at {filename}:{i + 3}\n"
                             )
                 else:
                     if not no_metadata:
@@ -73,25 +78,38 @@ def check_metadata(filenames, headers_spec, no_metadata=False, quiet=False):
         if (no_metadata and exitcode) or _first_metadata_line is None:
             continue
 
-        for i, line in enumerate(content_lines[_first_metadata_line:]):
-            if not line.strip():
-                break
+        if remove_metadata:
+            with open(filename, "w") as f:
+                f.write("".join(content_lines[:_first_metadata_line]))
 
-            header, value = line.split(": ", maxsplit=1)
-            header = header.lstrip('"')
+                index = 0
+                for i, line in enumerate(content_lines[_first_metadata_line:]):
+                    if not line.strip():
+                        index = i
+                        break
 
-            if header in headers_spec_regex:
-                value = re.sub(r"(\n|\\n|\"$)+", "", value)
-                regex = headers_spec_regex[header]
-                if re.match(regex, value) is None:
-                    exitcode = 1
-                    if not quiet:
-                        sys.stderr.write(
-                            f"Wrong metadata value at {filename}"
-                            f":{_first_metadata_line + i + 1} (regex"
-                            f" '{regex.pattern}' not matching for value"
-                            f" '{value}' in header '{header}')\n"
-                        )
+                f.write("".join(content_lines[_first_metadata_line + index :]))
+                exitcode = 1
+        else:
+            for i, line in enumerate(content_lines[_first_metadata_line:]):
+                if not line.strip():
+                    break
+
+                header, value = line.split(": ", maxsplit=1)
+                header = header.lstrip('"')
+
+                if header in headers_spec_regex:
+                    value = re.sub(r"(\n|\\n|\"$)+", "", value)
+                    regex = headers_spec_regex[header]
+                    if re.match(regex, value) is None:
+                        exitcode = 1
+                        if not quiet:
+                            sys.stderr.write(
+                                f"Wrong metadata value at {filename}"
+                                f":{_first_metadata_line + i + 1} (regex"
+                                f" '{regex.pattern}' not matching for value"
+                                f" '{value}' in header '{header}')\n"
+                            )
 
     return exitcode
 
@@ -129,6 +147,17 @@ def main():
         ),
     )
     parser.add_argument(
+        "-r",
+        "--remove",
+        "--remove-metadata",
+        action="store_true",
+        dest="remove_metadata",
+        help=(
+            "Remove metadata from files that have it. You must pass it along"
+            " with '--no-metadata'."
+        ),
+    )
+    parser.add_argument(
         "-s",
         "--standard-headers",
         action="store_true",
@@ -147,6 +176,9 @@ def main():
     )
     parser.add_argument("-q", "--quiet", action="store_true", help="Supress output")
     args = parser.parse_args()
+
+    if args.remove_metadata:
+        args.no_metadata = True
 
     if args.no_metadata and len(headers_spec.keys()):
         raise ValueError(
@@ -179,6 +211,7 @@ def main():
         args.filenames,
         headers_spec,
         no_metadata=args.no_metadata,
+        remove_metadata=args.remove_metadata,
         quiet=args.quiet,
     )
 
