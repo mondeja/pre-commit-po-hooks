@@ -10,6 +10,12 @@
   description: Checks for untranslated messages in PO files
   files: \.po$
   language: python
+- id: remove-django-translators
+  name: remove-django-translators
+  entry: lreplace-extracted-comments-hook --django-translators
+  description: Removes the "Translator" string prepended by Django extracting messages con xgettext
+  files: \.po$
+  language: python
 - id: lreplace-extracted-comments
   name: lreplace-extracted-comments
   entry: lreplace-extracted-comments-hook

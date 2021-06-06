@@ -16,7 +16,12 @@ TMP_DIR = tempfile.gettempdir()
 
 
 def lreplace_extracted_comments(
-    filenames, match, replacement, dry_run=False, quiet=False
+    filenames,
+    match=None,
+    replacement=None,
+    django_translators=False,
+    dry_run=False,
+    quiet=False,
 ):
     """Replace the beginning of the extracted comments which starts with the
     string passed in the argument ``match``.
@@ -28,11 +33,15 @@ def lreplace_extracted_comments(
     filenames : list
       Set of file names to replace.
 
-    match : str
+    match : str, optional
       The start of the extracted comment content to be replaced.
 
-    replacement : str
+    replacement : str, optional
       The replacement for the beginning of the matching extracted comments.
+
+    django_translators : bool, optional
+      Convenient parameter to pass ``Translators: `` as ``-m`` parameter and
+      an empty string as replacement.
 
     dry_run : bool, optional
       Don't do the replacements, just writes to stderr the location of them.
@@ -48,7 +57,14 @@ def lreplace_extracted_comments(
 
     int: 0 if no a extracted comment has been replaced, 1 otherwise.
     """
-    regex = re.compile(rf"^#\.\s{re.escape(match)}")
+    if not django_translators and not match and not replacement:
+        raise ValueError("You need to specify a match and replacement")
+
+    if django_translators:
+        regex = re.compile(r"^#\.\sTranslators:\s")
+        replacement = ""
+    else:
+        regex = re.compile(rf"^#\.\s{re.escape(match)}")
 
     exitcode = 0
     for filename in filenames:
@@ -105,7 +121,7 @@ def main():
         "-m",
         "--match",
         dest="match",
-        required=True,
+        required=False,
         metavar="MATCH",
         help="The string to match at the beginning of the extracted comments to"
         " replace it.",
@@ -114,16 +130,26 @@ def main():
         "-r",
         "--replacement",
         dest="replacement",
-        required=True,
+        required=False,
         metavar="REPL",
         help="The substitution to be used to replace the matching string.",
+    )
+    parser.add_argument(
+        "--django-translators",
+        action="store_true",
+        dest="django_translators",
+        required=False,
+        help=(
+            "Pass 'Translators: ' as '-m' argument and an empty string as replacement."
+        ),
     )
     args = parser.parse_args()
 
     return lreplace_extracted_comments(
         args.filenames,
-        args.match,
-        args.replacement,
+        match=args.match,
+        replacement=args.replacement,
+        django_translators=args.django_translators,
         dry_run=args.dry_run,
         quiet=args.quiet,
     )

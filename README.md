@@ -15,12 +15,7 @@ Hooks for pre-commit useful working with PO files.
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
-    - id: lreplace-extracted-comments
-      args:
-        - -m
-        - 'Translators: '
-        - -r
-        - ''
+    - id: remove-django-translators
     - id: check-metadata
       args:
         - -h
@@ -41,9 +36,7 @@ Checks for untranslated messages printing their line numbers if found.
 
 ### **`lreplace-extracted-comments`**
 
-Replaces a matching string at the beginning of the extracted comments.
-This can be used to remove the string "Translators: " introduced by Django (see
-more about this problem in [django-rosetta#245][django-rosetta-lstrip]).
+Replaces a matching string at the beginning of extracted comments.
 
 #### Parameters
 
@@ -54,6 +47,13 @@ more about this problem in [django-rosetta#245][django-rosetta-lstrip]).
 - `-d/--dry-run`: Don't do the replacements, only writes to stderr the locations
  of the extracted comments to be replaced.
  
+### **`remove-django-translators`**
+
+Same as [`lreplace-extracted-comments`][lreplace-extracted-comments-link]
+passing `--match "Translators: " --replacement ""`. Useful to remove the string
+prepended by Django extracting messages with gettext (see more about this
+problem in [django-rosetta#245][django-rosetta-lstrip]).
+
 ### **`check-metadata`**
 
 Check that metadata fields matches a set of regular expressions.
@@ -78,4 +78,5 @@ Check that metadata fields matches a set of regular expressions.
 [tests-image]: https://img.shields.io/github/workflow/status/mondeja/pre-commit-po-hooks/CI?logo=github&label=tests
 [tests-link]: https://github.com/mondeja/pre-commit-po-hooks/actions?query=workflow%CI
 
+[lreplace-extracted-comments-link]: https://github.com/mondeja/pre-commit-po-hooks#lreplace-extracted-comments
 [django-rosetta-lstrip]: https://github.com/mbi/django-rosetta/pull/245

@@ -1,6 +1,7 @@
 ignore: |
   venv
   build
+  .pre-commit-hooks.yaml
 
 rules:
   braces:
