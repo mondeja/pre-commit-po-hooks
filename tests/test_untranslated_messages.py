@@ -10,6 +10,7 @@ import pytest
 from hooks.untranslated_messages import check_untranslated_messages
 
 
+@pytest.mark.parametrize("min_", ("100%", None), ids=("min_=100%", "min=None"))
 @pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))
 @pytest.mark.parametrize(
     ("contents", "n_printed_errors", "expected_exitcode", "expected_line_numbers"),
@@ -47,6 +48,7 @@ def test_check_untranslated_messages(
     n_printed_errors,
     expected_exitcode,
     expected_line_numbers,
+    min_,
     tmp_path,
 ):
     filenames = []
@@ -60,7 +62,10 @@ def test_check_untranslated_messages(
 
     stderr = io.StringIO()
     with contextlib.redirect_stderr(stderr):
-        assert check_untranslated_messages(filenames, quiet=quiet) == expected_exitcode
+        assert (
+            check_untranslated_messages(filenames, min_=min_, quiet=quiet)
+            == expected_exitcode
+        )
 
     stderr_lines = stderr.getvalue().splitlines()
     if quiet:
@@ -71,8 +76,12 @@ def test_check_untranslated_messages(
         assert len(stderr_lines) == len(expected_line_numbers)
 
         for i, line in enumerate(stderr_lines):
-            line_number = int(line.split(":")[-1])
-            assert line_number == expected_line_numbers[i]
+            try:
+                line_number = int(line.split(":")[-1])
+            except ValueError:
+                continue
+            else:
+                assert line_number == expected_line_numbers[i]
 
     for filename in filenames:
         os.remove(filename)

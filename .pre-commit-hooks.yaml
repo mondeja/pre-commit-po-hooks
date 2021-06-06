@@ -46,3 +46,9 @@
   description: Checks that each one of your PO files don't contain more than X messages
   files: \.po$
   language: python
+- id: min-translated
+  name: min-translated
+  entry: untranslated-messages-hook --min
+  description: Checks that each one of your PO files has at least a number or a parcentage of messages translated
+  files: \.po$
+  language: python

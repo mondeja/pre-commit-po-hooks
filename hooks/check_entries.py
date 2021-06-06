@@ -73,6 +73,9 @@ def main():
         return maximum_number_of_messages(
             args.filenames, args.max_messages, quiet=args.quiet
         )
+    else:
+        parser.print_help()
+        return 1
 
 
 if __name__ == "__main__":

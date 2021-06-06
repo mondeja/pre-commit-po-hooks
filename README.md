@@ -11,7 +11,7 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.4.0
+  rev: v1.5.0
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
@@ -28,6 +28,12 @@ Checks for obsolete messages printing their line numbers if found.
 ### **`untranslated-messages`**
 
 Checks for untranslated messages printing their line numbers if found.
+
+#### Parameters
+
+- `-m/--min`: Minimum number of messages that must be translated in each file
+ to pass this check. Can be defined as a percentage of the messages translated
+ appending a character `%` at the end of the value.
 
 ### **`lreplace-extracted-comments`**
 
@@ -111,6 +117,23 @@ first argument:
 #### Parameters
 
 - Maximum number of messages allowed for each PO file.
+
+### **`min-translated`**
+
+Define a minimum number of files that must be translated in order to pass.
+Pass a float or a value ending with `%` character if you wan to compare
+against the percentage of translated files:
+
+```yaml
+- id: min-translated
+  args:
+    - "95%"
+```
+
+#### Parameters
+
+- Minimum number or percentage of messages which must be translated in each
+ PO file.
 
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
