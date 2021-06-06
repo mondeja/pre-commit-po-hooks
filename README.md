@@ -51,7 +51,7 @@ Replaces a matching string at the beginning of extracted comments.
 
 Same as [`lreplace-extracted-comments`][lreplace-extracted-comments-link]
 passing `--match "Translators: " --replacement ""`. Useful to remove the string
-prepended by Django extracting messages with gettext (see more about this
+prepended by Django extracting messages with xgettext (see more about this
 problem in [django-rosetta#245][django-rosetta-lstrip]).
 
 ### **`check-metadata`**
@@ -69,6 +69,28 @@ Check that metadata fields matches a set of regular expressions.
 - `-n/--no-metadata`: When this option is passed, the hook instead checks that
  there is no metadata in the files, so it will exit with code 1 if some
  metadata is found in a file or 0 if there is no metadata in any files.
+
+### **`standard-metadata`**
+
+Check that the metadata of your PO files fits some standard requirements based
+on the next regular expressions:
+
+- `Project-Id-Version`: `\d+\.\d+\.\d`
+- `Report-Msgid-Bugs-To`: `.+\s<.+@.+\..+>`
+- `Last-Translator`: `.+\s<.+@.+\..+>`
+- `Language-Team`: `.+\s<.+@.+\..+>`
+- `Language`: `\w\w_?\w?\w?(@\w+)?`
+- `Content-Type`: `text/plain; charset=[a-zA-Z\-]+`
+- `Content-Transfer-Encoding`: `\d+bits?`
+
+If you need to replace some fields with other regular expressions, you can do
+it passing the `-h` and `-v` arguments of the
+[`check-metadata` hook][check-metadata-link].
+
+For example, if your version
+includes the character `v` at the beginning:
+`-h "Project-Id-Version" -v "v\d+\.\d+\.\d"`
+
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks
 [pypi-version-badge-link]: https://img.shields.io/pypi/v/pre-commit-po-hooks
@@ -79,4 +101,5 @@ Check that metadata fields matches a set of regular expressions.
 [tests-link]: https://github.com/mondeja/pre-commit-po-hooks/actions?query=workflow%CI
 
 [lreplace-extracted-comments-link]: https://github.com/mondeja/pre-commit-po-hooks#lreplace-extracted-comments
+[check-metadata-link]: https://github.com/mondeja/pre-commit-po-hooks#check-metadata
 [django-rosetta-lstrip]: https://github.com/mbi/django-rosetta/pull/245

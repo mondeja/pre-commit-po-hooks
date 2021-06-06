@@ -128,6 +128,23 @@ def main():
             " information, exits with code 1."
         ),
     )
+    parser.add_argument(
+        "-s",
+        "--standard-headers",
+        action="store_true",
+        dest="standard_headers",
+        help=(
+            "A common standard set of headers will be defined as specification."
+            " Each value can be overwritten using '-h' and '-v' arguments."
+            "\n\n- 'Project-Id-Version': \\d+\\.\\d+\\.\\d\n"
+            "- 'Report-Msgid-Bugs-To': .+\\s<.+@.+\\..+>\n"
+            "- 'Last-Translator': .+\\s<.+@.+\\..+>\n"
+            "- 'Language-Team': .+\\s<.+@.+\\..+>\n"
+            "- 'Language': \\w\\w_?\\w?\\w?(@\\w+)?\n"
+            "- 'Content-Type': text/plain; charset=[A-Z\\-]+\n"
+            r"- 'Content-Transfer-Encoding': \d+bits?"
+        ),
+    )
     parser.add_argument("-q", "--quiet", action="store_true", help="Supress output")
     args = parser.parse_args()
 
@@ -136,6 +153,27 @@ def main():
             "You must pass either '--no-metadata' or headers regexes specification,"
             " but both can't be non false."
         )
+
+    if args.no_metadata and args.standard_headers:
+        raise ValueError(
+            "You must pass either '--no-metadata' or standard headers regexes"
+            " specification."
+        )
+
+    if args.standard_headers:
+        new_headers_spec = {
+            "Project-Id-Version": r"\d+\.\d+\.\d",
+            "Report-Msgid-Bugs-To": r".+\s<.+@.+\..+>",
+            "Last-Translator": r".+\s<.+@.+\..+>",
+            "Language-Team": r".+\s<.+@.+\..+>",
+            "Language": r"\w\w_?\w?\w?(@\w+)?",
+            "Content-Type": r"text/plain; charset=[a-zA-Z\-]+",
+            "Content-Transfer-Encoding": r"\d+bits?",
+        }
+        if headers_spec:
+            new_headers_spec.update(headers_spec)
+
+        headers_spec = new_headers_spec
 
     return check_metadata(
         args.filenames,
