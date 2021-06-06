@@ -11,7 +11,7 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.3.4
+  rev: v1.4.0
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
@@ -96,6 +96,21 @@ returning exit code 1.
 
 - `-r/--remove/--remove-metadata`: When this option is passed the metadata will
  be removed from the files instead of being treated as a lint error.
+ 
+### **`max-messages`**
+
+Define a maximum number of entries for each PO file. Pass an interger in the
+first argument:
+
+```yaml
+- id: max-messages
+  args:
+    - 5000
+```
+
+#### Parameters
+
+- Maximum number of messages allowed for each PO file.
 
  
 [pypi-link]: https://pypi.org/project/pre-commit-po-hooks

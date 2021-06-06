@@ -40,3 +40,9 @@
   description: Checks that your PO don't contain metadata headers
   files: \.po$
   language: python
+- id: max-messages
+  name: max-messages
+  entry: check-entries-hook --max-messages
+  description: Checks that each one of your PO files don't contain more than X messages
+  files: \.po$
+  language: python
