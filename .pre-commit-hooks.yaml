@@ -37,13 +37,31 @@
 - id: no-metadata
   name: no-metadata
   entry: check-metadata-hook --no-metadata
-  description: Checks that your PO don't contain metadata headers
+  description: Checks that your PO files don't contain metadata headers
+  files: \.po$
+  language: python
+- id: remove-metadata
+  name: remove-metadata
+  entry: check-metadata-hook --no-metadata --remove-metadata
+  description: Removes metadata headers from your PO files
+  files: \.po$
+  language: python
+- id: check-entries
+  name: check-entries
+  entry: check-entries-hook
+  description: Check that PO files entries match a set of requirements passed by parameters
   files: \.po$
   language: python
 - id: max-messages
   name: max-messages
   entry: check-entries-hook --max-messages
   description: Checks that each one of your PO files don't contain more than X messages
+  files: \.po$
+  language: python
+- id: max-lines
+  name: max-lines
+  entry: check-entries-hook --max-lines
+  description: Checks that each one of your PO files don't contain more than X lines
   files: \.po$
   language: python
 - id: min-translated

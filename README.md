@@ -11,12 +11,14 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.5.0
+  rev: v1.6.0
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
     - id: remove-django-translators
     - id: standard-metadata
+    - id: max-lines
+      args: ["10000"]
 ```
 
 ## Hooks
@@ -103,6 +105,11 @@ returning exit code 1.
 - `-r/--remove/--remove-metadata`: When this option is passed the metadata will
  be removed from the files instead of being treated as a lint error.
  
+### **`remove-metadata`**
+
+Remove metadata headers from your PO files. This is an alias for
+[`no-metadata` hook][no-metadata-link] passing `--remove-metadata` argument.
+
 ### **`max-messages`**
 
 Define a maximum number of entries for each PO file. Pass an interger in the
@@ -117,6 +124,21 @@ first argument:
 #### Parameters
 
 - Maximum number of messages allowed for each PO file.
+
+### **`max-lines`**
+
+Define a maximum number of lines for each PO file. Pass an interger in the
+first argument:
+
+```yaml
+- id: max-lines
+  args:
+    - "10000"
+```
+
+#### Parameters
+
+- Maximum number of lines allowed for each PO file.
 
 ### **`min-translated`**
 
@@ -146,4 +168,5 @@ against the percentage of translated files:
 
 [lreplace-extracted-comments-link]: https://github.com/mondeja/pre-commit-po-hooks#lreplace-extracted-comments
 [check-metadata-link]: https://github.com/mondeja/pre-commit-po-hooks#check-metadata
+[no-metadata-link]: https://github.com/mondeja/pre-commit-po-hooks#no-metadata
 [django-rosetta-lstrip]: https://github.com/mbi/django-rosetta/pull/245
