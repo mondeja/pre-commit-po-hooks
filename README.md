@@ -73,7 +73,7 @@ Check that metadata fields matches a set of regular expressions.
  there is no metadata in the files, so it will exit with code 1 if some
  metadata is found in a file or 0 if there is no metadata in any files.
 - `-r/--remove/--remove-metadata`: When this option is passed the metadata will
- be removed from the files instead of being trated as a lint error.
+ be removed from the files instead of being treated as a lint error.
 
 ### **`standard-metadata`**
 
