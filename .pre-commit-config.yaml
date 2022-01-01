@@ -1,21 +1,21 @@
 repos:
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.20.0
+    rev: v2.31.0
     hooks:
       - id: pyupgrade
         args:
           - --py36-plus
   - repo: https://github.com/psf/black
-    rev: 21.6b0
+    rev: 21.12b0
     hooks:
       - id: black
         files: \.py$
   - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v1.17.0
+    rev: v1.20.0
     hooks:
       - id: setup-cfg-fmt
   - repo: https://github.com/PyCQA/flake8
-    rev: 3.9.2
+    rev: 4.0.1
     hooks:
       - id: flake8
         name: flake8-package
@@ -31,14 +31,14 @@ repos:
           - flake8-implicit-str-concat
         files: ^tests/
   - repo: https://github.com/PyCQA/isort
-    rev: 5.9.1
+    rev: 5.10.1
     hooks:
       - id: isort
         args:
           - --filter-files
         files: \.py$
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.26.1
+    rev: v1.26.3
     hooks:
       - id: yamllint
         files: .+\.(yml|yaml)
@@ -46,18 +46,18 @@ repos:
           - -c
           - .yamllint
   - repo: https://github.com/mondeja/repo-stream
-    rev: v1.1.0
+    rev: v1.3.1
     hooks:
       - id: repo-stream
         args:
           - -config=https://github.com/mondeja/repo-stream-config
           - -updater=upstream
   - repo: https://github.com/mondeja/pre-commit-hooks
-    rev: v1.5.1
+    rev: v1.5.2
     hooks:
       - id: root-editorconfig-required
       - id: dev-extras-required
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.3.5
+    rev: 2.4.0
     hooks:
       - id: editorconfig-checker

@@ -34,17 +34,18 @@ def maximum_number_of_messages(filenames, max_messages=10000, quiet=False):
         with open(filename) as f:
             content_lines = f.readlines()
 
-        number_of_messages = 0
-        for i, line in enumerate(content_lines):
+        number_of_messages = -1
+        for line in content_lines:
             if line.startswith('msgid "'):
                 number_of_messages += 1
+        number_of_messages = max(number_of_messages, 0)
 
-        if (number_of_messages - 1) > max_messages:
+        if number_of_messages > max_messages:
             exitcode = 1
             if not quiet:
                 sys.stderr.write(
                     f"More messages ({number_of_messages}) than allowed"
-                    f" ({max_messages}) at file {os.path.abspath(filename)}\n"
+                    f" ({max_messages}) at file {filename}\n"
                 )
 
     return exitcode
@@ -76,16 +77,14 @@ def maximum_number_of_lines(filenames, max_lines=10000, quiet=False):
 
     for filename in filenames:
         with open(filename) as f:
-            content_lines = f.readlines()
-
-        number_of_lines = len(content_lines)
-        if number_of_lines > max_lines:
-            exitcode = 1
-            if not quiet:
-                sys.stderr.write(
-                    f"More lines ({number_of_lines}) than allowed ({max_lines})"
-                    f" at file {os.path.abspath(filename)}\n"
-                )
+            number_of_lines = len(f.readlines())
+            if number_of_lines > max_lines:
+                exitcode = 1
+                if not quiet:
+                    sys.stderr.write(
+                        f"More lines ({number_of_lines}) than allowed ({max_lines})"
+                        f" at file {filename}\n"
+                    )
 
     return exitcode
 
