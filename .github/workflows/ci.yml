@@ -29,18 +29,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip wheel coveralls
+          python -m pip install --upgrade pip wheel
           python -m pip install .[test]
           pip list
       - name: Test with pytest
         run: |
           python -m pytest -svv --cov=hooks --cov-config=setup.cfg
-      - name: Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: $COVERALLS_REPO_TOKEN
-          COVERALLS_SERVICE_NAME: github
-        run: coveralls -v --service=github-actions
 
   build-sdist:
     if: startsWith(github.ref, 'refs/tags/')

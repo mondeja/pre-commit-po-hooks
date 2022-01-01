@@ -1,7 +1,6 @@
 """Script that checks entries of PO files."""
 
 import argparse
-import os
 import sys
 
 
