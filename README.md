@@ -11,10 +11,11 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.6.1
+  rev: v1.7.0
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages
+    - id: fuzzy-messages
     - id: remove-django-translators
     - id: standard-metadata
     - id: max-lines
@@ -36,6 +37,10 @@ Checks for untranslated messages printing their line numbers if found.
 - `-m/--min`: Minimum number of messages that must be translated in each file
  to pass this check. Can be defined as a percentage of the messages translated
  appending a character `%` at the end of the value.
+
+### **`fuzzy-messages`**
+
+Checks for fuzzy messages printing their line numbers if found.
 
 ### **`lreplace-extracted-comments`**
 
