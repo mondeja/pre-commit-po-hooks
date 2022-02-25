@@ -10,6 +10,12 @@
   description: Checks for untranslated messages in PO files
   files: \.po$
   language: python
+- id: fuzzy-messages
+  name: fuzzy-messages
+  entry: fuzzy-messages-hook
+  description: Checks for fuzzy messages in PO files
+  files: \.po$
+  language: python
 - id: remove-django-translators
   name: remove-django-translators
   entry: lreplace-extracted-comments-hook --django-translators
