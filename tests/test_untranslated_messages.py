@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from hooks.untranslated_messages import check_untranslated_messages
+from pre_commit_po_hooks.untranslated_messages import check_untranslated_messages
 
 
 @pytest.mark.parametrize("min_", ("100%", None), ids=("min_=100%", "min=None"))

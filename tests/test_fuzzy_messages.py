@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from hooks.fuzzy_messages import check_fuzzy_messages
+from pre_commit_po_hooks.fuzzy_messages import check_fuzzy_messages
 
 
 """

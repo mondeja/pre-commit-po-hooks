@@ -30,43 +30,43 @@
   language: python
 - id: check-metadata
   name: check-metadata
-  entry: check-metadata-hook
+  entry: check-po-metadata-hook
   description: Checks that the metadata values of your PO files matchs against some regexes
   files: \.po$
   language: python
 - id: standard-metadata
   name: standard-metadata
-  entry: check-metadata-hook --standard-headers
+  entry: check-po-metadata-hook --standard-headers
   description: Checks that the metadata of your PO files fits a set of standard requirements
   files: \.po$
   language: python
 - id: no-metadata
   name: no-metadata
-  entry: check-metadata-hook --no-metadata
+  entry: check-po-metadata-hook --no-metadata
   description: Checks that your PO files don't contain metadata headers
   files: \.po$
   language: python
 - id: remove-metadata
   name: remove-metadata
-  entry: check-metadata-hook --no-metadata --remove-metadata
+  entry: check-po-metadata-hook --no-metadata --remove-metadata
   description: Removes metadata headers from your PO files
   files: \.po$
   language: python
 - id: check-entries
   name: check-entries
-  entry: check-entries-hook
+  entry: check-po-entries-hook
   description: Check that PO files entries match a set of requirements passed by parameters
   files: \.po$
   language: python
 - id: max-messages
   name: max-messages
-  entry: check-entries-hook --max-messages
+  entry: check-po-entries-hook --max-messages
   description: Checks that each one of your PO files don't contain more than X messages
   files: \.po$
   language: python
 - id: max-lines
   name: max-lines
-  entry: check-entries-hook --max-lines
+  entry: check-po-entries-hook --max-lines
   description: Checks that each one of your PO files don't contain more than X lines
   files: \.po$
   language: python
