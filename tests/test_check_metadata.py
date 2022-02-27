@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from hooks.check_metadata import check_metadata
+from pre_commit_po_hooks.check_metadata import check_metadata
 
 
 @pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))

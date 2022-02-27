@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from hooks.obsolete_messages import check_obsolete_messages
+from pre_commit_po_hooks.obsolete_messages import check_obsolete_messages
 
 
 @pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))

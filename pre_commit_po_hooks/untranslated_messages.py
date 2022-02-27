@@ -31,7 +31,10 @@ def check_untranslated_messages(filenames, min_=None, quiet=False):
         with open(filename) as f:
             content_lines = f.readlines()
 
-        untranslated_messages, total_messages = -1, -1
+        if len(content_lines) > 4:  # skip first empty message
+            content_lines = content_lines[4:]
+
+        untranslated_messages, total_messages = 0, -1
 
         for i, line in enumerate(content_lines):
             next_i = i + 1

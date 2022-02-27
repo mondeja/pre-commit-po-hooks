@@ -11,7 +11,7 @@ Hooks for pre-commit useful working with PO files.
 
 ```yaml
 - repo: https://github.com/mondeja/pre-commit-po-hooks
-  rev: v1.7.0
+  rev: v1.7.3
   hooks:
     - id: obsolete-messages
     - id: untranslated-messages

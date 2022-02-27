@@ -6,7 +6,10 @@ import tempfile
 
 import pytest
 
-from hooks.check_entries import maximum_number_of_lines, maximum_number_of_messages
+from pre_commit_po_hooks.check_entries import (
+    maximum_number_of_lines,
+    maximum_number_of_messages,
+)
 
 
 @pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))

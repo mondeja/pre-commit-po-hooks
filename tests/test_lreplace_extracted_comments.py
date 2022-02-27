@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from hooks.lreplace_extracted_comments import lreplace_extracted_comments
+from pre_commit_po_hooks.lreplace_extracted_comments import lreplace_extracted_comments
 
 
 @pytest.mark.parametrize("quiet", (False, True), ids=("quiet=False", "quiet=True"))
